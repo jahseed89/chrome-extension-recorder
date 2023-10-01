@@ -361,15 +361,8 @@
                   }
                 }
               }
-              //  function deletePlayer(){
-              //     console.log("delete button pushed")
-              //     if (!hasStarted){
-              //         deleteButton.closest("#scrInjector").remove();
-              //     }else{
-              //         alert("Recording is still on");
-              //     }
-              // }
-              // Add this event listener to your delete button
+
+              // Deleting recorded screen
               deleteButton.addEventListener("click", deletePlayer);
 
               function deletePlayer() {
@@ -447,7 +440,7 @@
 
               function finishRecording(result) {
                 //result is the url returned by the backend
-                let frontendUrl = ""; // your frontend url
+                let frontendUrl = "";
                 let fullUrl = frontendUrl + result;
                 chunks = [];
                 audioStream.getTracks().forEach((tracks) => tracks.stop());
@@ -457,21 +450,28 @@
                 alert("The link to your recording\n " + fullUrl);
               }
 
-              //  Uploading the file to the endpoint
+              // Uploading the file to the endpoint
               async function upload(formData) {
                 try {
-                  const response = await fetch(
-                    "http://hngstage5.azurewebsites.net/",
-                    {
-                      method: "POST",
-                      body: formData,
-                    }
-                  );
-                  const result = await response.json();
-                  finishRecording(result);
-                  console.log("Success:", result);
+                  const response = await fetch("http://hngstage5.azurewebsites.net/", {
+                    method: "POST",
+                    body: formData,
+                  });
+                  if (response.ok) {
+                    const result = await response.json();
+                    finishRecording(result);
+                    console.log("Success:", result);
+                  } else {
+                    console.error(
+                      "Failed to upload:",
+                      response.status,
+                      response.statusText
+                    );
+                    alert("Failed to upload the recording.");
+                  }
                 } catch (error) {
                   console.error("Error:", error);
+                  alert("An error occurred while uploading the recording.");
                 }
               }
             }
