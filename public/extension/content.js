@@ -1,13 +1,13 @@
-
-(()=>{
-  chrome.runtime.onMessage.addListener(async (message,sender, sendResponse)=>{
-         if(message.type == "responseStartRecording"){
-             console.log("Recording response recieved. recording started");
-             const streamId = message.streamId;
-             if (streamId){
-                 const divObject = document.createElement("div");
-                         divObject.id = "scrInjector"
-                         const injector = `
+(() => {
+  chrome.runtime.onMessage.addListener(
+    async (message, sender, sendResponse) => {
+      if (message.type == "responseStartRecording") {
+        console.log("Recording response recieved. recording started");
+        const streamId = message.streamId;
+        if (streamId) {
+          const divObject = document.createElement("div");
+          divObject.id = "scrInjector";
+          const injector = `
                                      <div id="injectCode">
                                          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
                                          <link rel="stylesheet" href="style.css">
@@ -42,36 +42,36 @@
                                              </div>
                                              </div>
                                      </div>
-                                     `
-                         let hasStarted = false
-                         let play = false
-                         let mediaRecorder = null
-                         let stream = null
-                         let audioStream = null
-                         let mixedStream = null
-                                     
-                         let startButton;
-                         let stopButton;
-                         let cameraButton;
-                         let micButton;
-                         let deleteButton; 
-                         let playText;
-                         let timerElement;
-                         let scrDot; 
-                         let hour = 0
-                         let minutes = 0
-                         let second = 0
-                         let timerInterval;
-                         let muted = false;
-             
-                         divObject.innerHTML = injector;
-                         document.body.appendChild(divObject);
-                         
-                         // Shadow Root
-                         let host = document.getElementById("scrInjector")
-                         // let root = host.attachShadow({mode: 'open'})
-                         let styleDiv = document.createElement("div")
-                         styleDiv.innerHTML = `
+                                     `;
+          let hasStarted = false;
+          let play = false;
+          let mediaRecorder = null;
+          let stream = null;
+          let audioStream = null;
+          let mixedStream = null;
+
+          let startButton;
+          let stopButton;
+          let cameraButton;
+          let micButton;
+          let deleteButton;
+          let playText;
+          let timerElement;
+          let scrDot;
+          let hour = 0;
+          let minutes = 0;
+          let second = 0;
+          let timerInterval;
+          let muted = false;
+
+          divObject.innerHTML = injector;
+          document.body.appendChild(divObject);
+
+          // Shadow Root
+          let host = document.getElementById("scrInjector");
+          // let root = host.attachShadow({mode: 'open'})
+          let styleDiv = document.createElement("div");
+          styleDiv.innerHTML = `
              <style>
              .scr-record-btn{
                  outline: none;
@@ -170,286 +170,314 @@
                  animation: blinkDot 1s alternate 0s infinite linear;
              }
              </style>
-                         `
-                         host.prepend(styleDiv)
-                         
-                         startButton = document.getElementById("startButton")
-                         stopButton = document.getElementById("stopButton")
-                         cameraButton = document.getElementById("cameraButton")
-                         micButton = document.getElementById("micButton")
-                         playText = document.getElementById("scrPlayText")
-                         timerElement = document.getElementById("timer-element")
-                         scrDot = document.getElementById("scrDot")
-                         deleteButton = document.getElementById("scrDeleteButton") 
-                         await startRecording();
-                         function dragger(){
-                 
-                             const draggableButton = document.getElementById("scRDraggableBox");
-                             let isDragging = false;
-                             let offsetX, offsetY;
-             
-                             draggableButton.addEventListener("mousedown", (event) => {
-                                 isDragging = true;
-                                 offsetX = event.clientX - draggableButton.getBoundingClientRect().left;
-                                 offsetY = event.clientY - draggableButton.getBoundingClientRect().top;
-                                 draggableButton.style.cursor = "grabbing";
-                             });
-             
-                             document.addEventListener("mousemove", (event) => {
-                                 if (!isDragging) return;
-             
-                                 const newX = event.clientX - offsetX;
-                                 const newY = event.clientY - offsetY;
-             
-                                 draggableButton.style.left = newX + "px";
-                                 draggableButton.style.top = newY + "px";
-                             });
-             
-                             document.addEventListener("mouseup", () => {
-                                 if (isDragging) {
-                                     isDragging = false;
-                                     draggableButton.style.cursor = "grab";
-                                 }
-                             });
-                 
-             
-                         }
-                         dragger()
-                         
-                         async function startRecording(){
-                             if(!streamId){
-                                 return
-                             }
-                             const options = { audio: {audio:{
-                                 echoCancellation: true,
-                                 sampleRate: 44100,
-                                 noiseSuppression: true
-                             }},
-                             video: { mandatory: { 
-                                 chromeMediaSource: 'desktop', 
-                                 chromeMediaSourceId: streamId
-                             }}};
-                             
-                         
-                             stream = await navigator.mediaDevices.getDisplayMedia({'video':true});
-                             audioStream = await navigator.mediaDevices.getUserMedia({audio: {audio:{
-                                 echoCancellation: true,
-                                 sampleRate: 44100,
-                                 noiseSuppression: true
-                             }}})
-                             console.log("Printing Stream")
-                             console.log(stream)
-                             
-                             if(stream && audioStream){
-                             mixedStream = new MediaStream([...stream.getTracks(),...audioStream.getTracks()])
-                             console.log("Stream Started")
-                             // const mime = MediaRecorder.isTypeSupported("video/webm; codecs=vp9") ? "video/webm; codecs=vp9":"video/webm";
-                             mediaRecorder = new MediaRecorder(mixedStream);
-                             mediaRecorder.start();
-                             let chunks = []
-                             mediaRecorder.addEventListener("dataavailable", function(e){
-                                 chunks.push(e.data);
-                             })
-                             mediaRecorder.addEventListener("start", function(e){
-                                 console.log("Started")
-                                 hasStarted = true
-                                 play = true;
-                                 startButton.innerHTML ='<i class="fa fa-pause"></i>'
-                                 playText.textContent = "Pause"
-                                 starttimer();
-                                 startBlinky();
-                             })
-                             mediaRecorder.addEventListener("resume", function(e){
-                                 // Event called when the 
-                                 play = true;
-                                 startButton.innerHTML ='<i class="fa fa-pause"></i>'
-                                 playText.textContent = "Pause"
-                                 starttimer();
-                                 startBlinky();
-                             })
-                             mediaRecorder.addEventListener("pause",function(){
-                                 // EVent called when the screen recording is paused
-                                 play = false;
-                                 startButton.innerHTML ='<i class="fa fa-play"></i>'
-                                 playText.textContent = "Play"
-                                 pauseTimer();
-                                 stopBlinky();
-                             })
-                             mediaRecorder.addEventListener("stop",function(e) {
-                                 let blob = new Blob(chunks,{type:"video/mp4"});
-                                 play = false;
-                                 startButton.innerHTML ='<i class="fa fa-play"></i>'
-                                 playText.innerHTML = "Play"
-                                 stopTimer();
-                                 stopBlinky();
-                         
-                                //  let recordUrl = URL.createObjectURL(blob);
-                                 const form = new FormData()
-                                 form.append("video",blob)
-                                 upload(form);
-                         
-                                //  chunks = [];
-                                //  audioStream.getTracks().forEach((tracks)=>tracks.stop())
-                                //  stream.getTracks().forEach((tracks)=>tracks.stop())
-                                //  resetAll();
-                             })
-                             async function playRecording(){
-                                 // if (mediaRecorder instanceof MediaRecorder){
-                                     if (hasStarted){
-                                         mediaRecorder.resume();
-                                         
-                                         play = true;
-                                         startButton.innerHTML ='<i class="fa fa-pause"></i>'
-                                         playText.innerHTML = "Pause"
-                                     }else{
-                                         await startRecording();
-                                         mediaRecorder.ondataavailable = function(){
-                                             hasStarted = true
-                                             play = true;
-                                             startButton.innerHTML ='<i class="fa fa-pause"></i>'
-                                             playText.innerHTML = "Pause"
-                                         }
-                                     }
-                               
-                             }
-                             function pauseRecording(){
-                                 mediaRecorder.pause();
-                             }
-                             function stopRecording(){
-                                 mediaRecorder.stop();
-                             }
-                             function resetAll(){
-                                 hasStarted = false
-                                 play = false
-                                 mediaRecorder = null
-                                 stream = null
-                                 audioStream = null
-                                 mixedStream = null
-                                 hour = 0
-                                 minutes = 0
-                                 second = 0
-                                 timerInterval = null;
-                                 muted = false;
-                             }
-                             function toggleAudio(){
-                                 if(audioStream){
-                                     if(muted){
-                                         audioStream.getTracks().forEach((tracks)=>{
-                                             tracks.enabled = true
-                                         })
-                                         muted = false
-                                         micButton.innerHTML = '<i class="fas fa-microphone"></i>'
-                                     }else{
-                                         audioStream.getTracks().forEach((tracks)=>{
-                                             tracks.enabled = false
-                                         })
-                                         muted = true
-                                         micButton.innerHTML = '<i class="fas fa-microphone-slash"></i>'
-                                     }
-                                 }
-                             }
-                             function deletePlayer(){
-                                console.log("delete button pushed")
-                                if (!hasStarted){
-                                    deleteButton.closest("#scrInjector").remove();
-                                }else{
-                                    alert("Recording is still on");
-                                }
-                            }
-                             function startBlinky(){
-                                 scrDot.classList.add("blinky");
-                             }
-                             function stopBlinky(){
-                                 scrDot.classList.remove("blinky");
-                             }
-                             function starttimer(){
-                                 timerInterval = setInterval(()=>{
-                                     if(second < 60){
-                                         second += 1
-                                         
-                                     }else{
-                                         second = 0
-                                         if(minutes > 59){
-                                             minutes = 0
-                                             hour += 1
-                                         }else{
-                                             minutes += 1
-                                         }
-                                     }
-                                     let hourtext = String(hour).padStart(2, '0');
-                                     let minutestext = String(minutes).padStart(2, '0');
-                                     let secondtext = String(second).padStart(2, '0');
-                                     timerElement.textContent = `${hourtext}:${minutestext}:${secondtext}`;
-                             
-                                 },1000)
-                             }
-                             function pauseTimer(){
-                                 clearInterval(timerInterval)
-                             }
+                         `;
+          host.prepend(styleDiv);
 
-                             function stopTimer(){
-                                 clearInterval(timerInterval)
-                                 hour = 0
-                                 minutes = 0
-                                 second = 0
-                                 let hourtext = String(hour).padStart(2, '0');
-                                 let minutestext = String(minutes).padStart(2, '0');
-                                 let secondtext = String(second).padStart(2, '0');
-                                 timerElement.textContent = `${hourtext}:${minutestext}:${secondtext}`;
-                             }
-                             
-                             
-                             
-                             startButton.addEventListener("click", function(){
-                                 if(hasStarted){
-                                     if (play){
-                                     pauseRecording();
-                                     }else{
-                                         playRecording();
-                                         startButton.innerHTML ='<i class="fas fa-pause"></i>'
-                                         playText.innerHTML = "Pause"
-                                     }
-                                 }else{
-                                     hasStarted = true
-                                     startRecording()
-                                 }
-                                 
-                             });
-                             stopButton.addEventListener("click",stopRecording);
-                             micButton.addEventListener("click",toggleAudio);
-                             deleteButton.addEventListener("click",deletePlayer);
+          startButton = document.getElementById("startButton");
+          stopButton = document.getElementById("stopButton");
+          cameraButton = document.getElementById("cameraButton");
+          micButton = document.getElementById("micButton");
+          playText = document.getElementById("scrPlayText");
+          timerElement = document.getElementById("timer-element");
+          scrDot = document.getElementById("scrDot");
+          deleteButton = document.getElementById("scrDeleteButton");
+          await startRecording();
+          function dragger() {
+            const draggableButton = document.getElementById("scRDraggableBox");
+            let isDragging = false;
+            let offsetX, offsetY;
 
-                             function finishRecording(result){
-                                //result is the url returned by the backend
-                                let frontendUrl = ""; // your frontend url
-                                let fullUrl = frontendUrl + result;
-                                chunks = [];
-                                audioStream.getTracks().forEach((tracks)=>tracks.stop())
-                                stream.getTracks().forEach((tracks)=>tracks.stop())
-                                resetAll();
-                            
-                                alert("The link to your recording\n "+ fullUrl);
-                            }
+            draggableButton.addEventListener("mousedown", (event) => {
+              isDragging = true;
+              offsetX =
+                event.clientX - draggableButton.getBoundingClientRect().left;
+              offsetY =
+                event.clientY - draggableButton.getBoundingClientRect().top;
+              draggableButton.style.cursor = "grabbing";
+            });
 
-                            //  Uploading the file to the endpoint
-                             async function upload(formData) {
-                                try {
-                                  const response = await fetch("http://hngstage5.azurewebsites.net/", {
-                                    method: "POST",
-                                    body: formData,
-                                  });
-                                  const result = await response.json();
-                                  finishRecording(result)
-                                  console.log("Success:", result);
-                                } catch (error) {
-                                  console.error("Error:", error);
-                                }
-                              }
-                              
-                             }
-                         }
-             }
-         }
-     })
- 
- })();
+            document.addEventListener("mousemove", (event) => {
+              if (!isDragging) return;
+
+              const newX = event.clientX - offsetX;
+              const newY = event.clientY - offsetY;
+
+              draggableButton.style.left = newX + "px";
+              draggableButton.style.top = newY + "px";
+            });
+
+            document.addEventListener("mouseup", () => {
+              if (isDragging) {
+                isDragging = false;
+                draggableButton.style.cursor = "grab";
+              }
+            });
+          }
+          dragger();
+
+          async function startRecording() {
+            if (!streamId) {
+              return;
+            }
+            const options = {
+              audio: {
+                audio: {
+                  echoCancellation: true,
+                  sampleRate: 44100,
+                  noiseSuppression: true,
+                },
+              },
+              video: {
+                mandatory: {
+                  chromeMediaSource: "desktop",
+                  chromeMediaSourceId: streamId,
+                },
+              },
+            };
+
+            stream = await navigator.mediaDevices.getDisplayMedia({
+              video: true,
+            });
+            audioStream = await navigator.mediaDevices.getUserMedia({
+              audio: {
+                audio: {
+                  echoCancellation: true,
+                  sampleRate: 44100,
+                  noiseSuppression: true,
+                },
+              },
+            });
+            console.log("Printing Stream");
+            console.log(stream);
+
+            if (stream && audioStream) {
+              mixedStream = new MediaStream([
+                ...stream.getTracks(),
+                ...audioStream.getTracks(),
+              ]);
+              console.log("Stream Started");
+              // const mime = MediaRecorder.isTypeSupported("video/webm; codecs=vp9") ? "video/webm; codecs=vp9":"video/webm";
+              mediaRecorder = new MediaRecorder(mixedStream);
+              mediaRecorder.start();
+              let chunks = [];
+              mediaRecorder.addEventListener("dataavailable", function (e) {
+                chunks.push(e.data);
+              });
+              mediaRecorder.addEventListener("start", function (e) {
+                console.log("Started");
+                hasStarted = true;
+                play = true;
+                startButton.innerHTML = '<i class="fa fa-pause"></i>';
+                playText.textContent = "Pause";
+                starttimer();
+                startBlinky();
+              });
+              mediaRecorder.addEventListener("resume", function (e) {
+                // Event called when the
+                play = true;
+                startButton.innerHTML = '<i class="fa fa-pause"></i>';
+                playText.textContent = "Pause";
+                starttimer();
+                startBlinky();
+              });
+              mediaRecorder.addEventListener("pause", function () {
+                // EVent called when the screen recording is paused
+                play = false;
+                startButton.innerHTML = '<i class="fa fa-play"></i>';
+                playText.textContent = "Play";
+                pauseTimer();
+                stopBlinky();
+              });
+              mediaRecorder.addEventListener("stop", function (e) {
+                let blob = new Blob(chunks, { type: "video/mp4" });
+                play = false;
+                startButton.innerHTML = '<i class="fa fa-play"></i>';
+                playText.innerHTML = "Play";
+                stopTimer();
+                stopBlinky();
+
+                //  let recordUrl = URL.createObjectURL(blob);
+                const form = new FormData();
+                form.append("video", blob);
+                upload(form);
+
+                //  chunks = [];
+                //  audioStream.getTracks().forEach((tracks)=>tracks.stop())
+                //  stream.getTracks().forEach((tracks)=>tracks.stop())
+                //  resetAll();
+              });
+              async function playRecording() {
+                // if (mediaRecorder instanceof MediaRecorder){
+                if (hasStarted) {
+                  mediaRecorder.resume();
+
+                  play = true;
+                  startButton.innerHTML = '<i class="fa fa-pause"></i>';
+                  playText.innerHTML = "Pause";
+                } else {
+                  await startRecording();
+                  mediaRecorder.ondataavailable = function () {
+                    hasStarted = true;
+                    play = true;
+                    startButton.innerHTML = '<i class="fa fa-pause"></i>';
+                    playText.innerHTML = "Pause";
+                  };
+                }
+              }
+              function pauseRecording() {
+                mediaRecorder.pause();
+              }
+              function stopRecording() {
+                mediaRecorder.stop();
+              }
+              function resetAll() {
+                hasStarted = false;
+                play = false;
+                mediaRecorder = null;
+                stream = null;
+                audioStream = null;
+                mixedStream = null;
+                hour = 0;
+                minutes = 0;
+                second = 0;
+                timerInterval = null;
+                muted = false;
+              }
+              function toggleAudio() {
+                if (audioStream) {
+                  if (muted) {
+                    audioStream.getTracks().forEach((tracks) => {
+                      tracks.enabled = true;
+                    });
+                    muted = false;
+                    micButton.innerHTML = '<i class="fas fa-microphone"></i>';
+                  } else {
+                    audioStream.getTracks().forEach((tracks) => {
+                      tracks.enabled = false;
+                    });
+                    muted = true;
+                    micButton.innerHTML =
+                      '<i class="fas fa-microphone-slash"></i>';
+                  }
+                }
+              }
+              //  function deletePlayer(){
+              //     console.log("delete button pushed")
+              //     if (!hasStarted){
+              //         deleteButton.closest("#scrInjector").remove();
+              //     }else{
+              //         alert("Recording is still on");
+              //     }
+              // }
+              // Add this event listener to your delete button
+              deleteButton.addEventListener("click", deletePlayer);
+
+              function deletePlayer() {
+                console.log("delete button pushed");
+                const injector = document.getElementById("scrInjector");
+                if (
+                  !hasStarted ||
+                  confirm(
+                    "Recording is still on. Do you want to stop and delete?"
+                  )
+                ) {
+                  if (injector && injector.parentElement) {
+                    injector.parentElement.removeChild(injector);
+                  }
+                }
+              }
+
+              function startBlinky() {
+                scrDot.classList.add("blinky");
+              }
+              function stopBlinky() {
+                scrDot.classList.remove("blinky");
+              }
+              function starttimer() {
+                timerInterval = setInterval(() => {
+                  if (second < 60) {
+                    second += 1;
+                  } else {
+                    second = 0;
+                    if (minutes > 59) {
+                      minutes = 0;
+                      hour += 1;
+                    } else {
+                      minutes += 1;
+                    }
+                  }
+                  let hourtext = String(hour).padStart(2, "0");
+                  let minutestext = String(minutes).padStart(2, "0");
+                  let secondtext = String(second).padStart(2, "0");
+                  timerElement.textContent = `${hourtext}:${minutestext}:${secondtext}`;
+                }, 1000);
+              }
+              function pauseTimer() {
+                clearInterval(timerInterval);
+              }
+
+              function stopTimer() {
+                clearInterval(timerInterval);
+                hour = 0;
+                minutes = 0;
+                second = 0;
+                let hourtext = String(hour).padStart(2, "0");
+                let minutestext = String(minutes).padStart(2, "0");
+                let secondtext = String(second).padStart(2, "0");
+                timerElement.textContent = `${hourtext}:${minutestext}:${secondtext}`;
+              }
+
+              startButton.addEventListener("click", function () {
+                if (hasStarted) {
+                  if (play) {
+                    pauseRecording();
+                  } else {
+                    playRecording();
+                    startButton.innerHTML = '<i class="fas fa-pause"></i>';
+                    playText.innerHTML = "Pause";
+                  }
+                } else {
+                  hasStarted = true;
+                  startRecording();
+                }
+              });
+              stopButton.addEventListener("click", stopRecording);
+              micButton.addEventListener("click", toggleAudio);
+              deleteButton.addEventListener("click", deletePlayer);
+
+              function finishRecording(result) {
+                //result is the url returned by the backend
+                let frontendUrl = ""; // your frontend url
+                let fullUrl = frontendUrl + result;
+                chunks = [];
+                audioStream.getTracks().forEach((tracks) => tracks.stop());
+                stream.getTracks().forEach((tracks) => tracks.stop());
+                resetAll();
+
+                alert("The link to your recording\n " + fullUrl);
+              }
+
+              //  Uploading the file to the endpoint
+              async function upload(formData) {
+                try {
+                  const response = await fetch(
+                    "http://hngstage5.azurewebsites.net/",
+                    {
+                      method: "POST",
+                      body: formData,
+                    }
+                  );
+                  const result = await response.json();
+                  finishRecording(result);
+                  console.log("Success:", result);
+                } catch (error) {
+                  console.error("Error:", error);
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  );
+})();
