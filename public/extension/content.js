@@ -295,16 +295,12 @@
                 playText.innerHTML = "Play";
                 stopTimer();
                 stopBlinky();
+                hasStarted = false
 
                 //  let recordUrl = URL.createObjectURL(blob);
                 const form = new FormData();
                 form.append("video", blob);
                 upload(form);
-
-                //  chunks = [];
-                //  audioStream.getTracks().forEach((tracks)=>tracks.stop())
-                //  stream.getTracks().forEach((tracks)=>tracks.stop())
-                //  resetAll();
               });
               async function playRecording() {
                 // if (mediaRecorder instanceof MediaRecorder){
@@ -365,20 +361,29 @@
               // Deleting recorded screen
               deleteButton.addEventListener("click", deletePlayer);
 
-              function deletePlayer() {
-                console.log("delete button pushed");
-                const injector = document.getElementById("scrInjector");
-                if (
-                  !hasStarted ||
-                  confirm(
-                    "Recording is still on. Do you want to stop and delete?"
-                  )
-                ) {
-                  if (injector && injector.parentElement) {
-                    injector.parentElement.removeChild(injector);
-                  }
+            //   function deletePlayer() {
+            //     console.log("delete button pushed");
+            //     const injector = document.getElementById("scrInjector");
+            //     if (
+            //       !hasStarted ||
+            //       confirm(
+            //         "Recording is still on. Do you want to stop and delete?"
+            //       )
+            //     ) {
+            //       if (injector && injector.parentElement) {
+            //         injector.parentElement.removeChild(injector);
+            //       }
+            //     }
+            //   }
+            function deletePlayer(){
+                console.log("delete button pushed")
+                if (!hasStarted){
+                    deleteButton.closest("#scrInjector").remove();
+                }else{
+                    alert("Recording is still on");
                 }
-              }
+            }
+
 
               function startBlinky() {
                 scrDot.classList.add("blinky");
@@ -436,21 +441,24 @@
               });
               stopButton.addEventListener("click", stopRecording);
               micButton.addEventListener("click", toggleAudio);
-              deleteButton.addEventListener("click", deletePlayer);
 
               function finishRecording(result) {
                 //result is the url returned by the backend
                 let frontendUrl = "";
                 let fullUrl = frontendUrl + result;
-                chunks = [];
-                audioStream.getTracks().forEach((tracks) => tracks.stop());
-                stream.getTracks().forEach((tracks) => tracks.stop());
-                resetAll();
+                resetRecording()
 
                 alert("The link to your recording\n " + fullUrl);
               }
 
-              // Uploading the file to the endpoint
+              function resetRecording() {
+                chunks = [];
+                audioStream.getTracks().forEach((tracks) => tracks.stop());
+                stream.getTracks().forEach((tracks) => tracks.stop());
+                resetAll();
+              }
+
+              // *********Uploading the file to the endpoint*********
               async function upload(formData) {
                 try {
                   const response = await fetch("http://hngstage5.azurewebsites.net/", {
@@ -472,6 +480,7 @@
                 } catch (error) {
                   console.error("Error:", error);
                   alert("An error occurred while uploading the recording.");
+                  resetRecording()
                 }
               }
             }
