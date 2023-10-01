@@ -22,6 +22,8 @@ import whatsApp from './whatsapp.svg'
 import womanBlue from './woman_blue.svg'
 import womanOrange from './woman_orange.svg'
 import dottedbg from './dottedbg.png'
+import recording from './recording.png'
+import footerLogo from './footer-logo.png'
 
 
 export  {
@@ -48,5 +50,7 @@ export  {
     whatsApp,
     womanBlue,
     womanOrange,
-    dottedbg
+    dottedbg,
+    recording,
+    footerLogo
 }

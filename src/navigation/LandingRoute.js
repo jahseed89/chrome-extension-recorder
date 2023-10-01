@@ -1,11 +1,11 @@
 import React, { lazy } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import PageNotFound from "../pages/page-not-found/PageNotFound";
-import { EXTENTION_ROUTE, HOME_ROUTE, SIGNUP_ROUTE } from "../content-management/Landing";
+import { HOME_ROUTE, RECORDER_ROUTE, SIGNUP_ROUTE } from "../content-management/Landing";
 
 const LandingLayout = lazy(() => import('../layout/LandingLayout'))
 const Home = lazy(() => import("../pages/home/Home"))
-const Extention = lazy(() => import("../pages/extention/Extention"))
+const Recorder = lazy(() => import("../pages/recorder/Recorder"))
 const SignUp = lazy(() => import("../auth/SignUp"))
 
 
@@ -23,8 +23,8 @@ const LandingRoute = () => {
               element={<Home />}
             />
             <Route
-              path={EXTENTION_ROUTE}
-              element={<Extention />}
+              path={RECORDER_ROUTE}
+              element={<Recorder />}
             />
             <Route
               path={SIGNUP_ROUTE}

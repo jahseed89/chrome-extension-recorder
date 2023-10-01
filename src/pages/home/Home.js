@@ -7,9 +7,7 @@ import { createUseStyles } from "react-jss";
 
 const useStyles = createUseStyles((theme) => ({
   homeContainer: {
-    padding: "1rem 10px",
-    width: "95%",
-    margin: "1rem auto",
+    padding: "1rem 0",
     fontFamily: theme.font.soraFont,
   },
   home: {
