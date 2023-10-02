@@ -14,6 +14,7 @@ import { Button } from "../../components/index";
 import { createUseStyles } from "react-jss";
 import FeatureDecCard from "../../components/feat-dec-card/FeatureDecCard";
 import ListingCard from "../../components/listing-card/ListingCard";
+import Footer from "../../components/footer/Footer";
 
 const useStyles = createUseStyles((theme) => ({
   homeContainer: {
@@ -195,6 +196,7 @@ const Home = () => {
           />
         </div>
       </div>
+      <Footer />
     </>
   );
 };
