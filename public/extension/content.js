@@ -361,20 +361,6 @@
               // Deleting recorded screen
               deleteButton.addEventListener("click", deletePlayer);
 
-            //   function deletePlayer() {
-            //     console.log("delete button pushed");
-            //     const injector = document.getElementById("scrInjector");
-            //     if (
-            //       !hasStarted ||
-            //       confirm(
-            //         "Recording is still on. Do you want to stop and delete?"
-            //       )
-            //     ) {
-            //       if (injector && injector.parentElement) {
-            //         injector.parentElement.removeChild(injector);
-            //       }
-            //     }
-            //   }
             function deletePlayer(){
                 console.log("delete button pushed")
                 if (!hasStarted){
@@ -454,14 +440,14 @@
               function resetRecording() {
                 chunks = [];
                 audioStream.getTracks().forEach((tracks) => tracks.stop());
-                stream.getTracks().forEach((tracks) => tracks.stop());
+                stream.getTracks().forEach((track) => track.stop());
                 resetAll();
               }
 
               // *********Uploading the file to the endpoint*********
               async function upload(formData) {
                 try {
-                  const response = await fetch("http://hngstage5.azurewebsites.net/", {
+                  const response = await fetch("", {
                     method: "POST",
                     body: formData,
                   });

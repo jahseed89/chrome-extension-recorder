@@ -35,6 +35,9 @@ const useStyles = createUseStyles((theme) => ({
     fontWeight: theme.fontWidth.largWidth,
     lineHeight: theme.lineHeight.titleHieght,
   },
+  installBtn: {
+    textAlign: 'start'
+  },
   desc: {
     fontSize: theme.fontSize.textSize,
     fontWeight: theme.fontWidth.smallWidth,
@@ -97,8 +100,8 @@ const useStyles = createUseStyles((theme) => ({
       flexWrap: "wrap",
     },
     installBtn: {
-      widows: 'fit-content',
-      margin: '0 auto'
+      width: 'fit-content',
+      margin: '0 auto',
     },
     cardHolder: {
       width: "100%",
@@ -185,12 +188,12 @@ const Home = () => {
             desc='Click the "Start Recording" button in our extension.  choose which part of your screen to capture and who you want to send it to.'
           />
           <ListingCard
-            num="1"
+            num="2"
             title="Shear Your Recording"
             desc="We generate a shareable link for your video. Simply send it to your audience via email or copy the link to send via any platform."
           />
           <ListingCard
-            num="1"
+            num="3"
             title="Learn Effortlessly"
             desc="Recipients can access your video effortlessly through the provided link, with our user-friendly interface suitable for everyone."
           />

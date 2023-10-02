@@ -35,6 +35,10 @@ const useStyles = createUseStyles((theme) => ({
         title: {
           fontSize: theme.fontSize.titleSizeMobile,
         },
+        desCont: {
+          textAlign: 'center',
+          color: 'red'
+        }
       },
 
 }))
