@@ -13,6 +13,7 @@ import { createUseStyles } from "react-jss";
 const useStyles = createUseStyles((theme) => ({
   recordingVideoSec: {
     width: "70%",
+    fontFamily: theme.font.interFont
   },
   inputSection: {
     display: "flex",
@@ -32,6 +33,9 @@ const useStyles = createUseStyles((theme) => ({
     border: "none",
     padding: "10px 6.5pxpx",
   },
+  transScr: {
+    fontFamily: theme.font.interFont
+  },
   copyBtn: {
     textAlign: "center",
     borderRadius: "5px",
@@ -41,6 +45,11 @@ const useStyles = createUseStyles((theme) => ({
   },
   shearVideo: {
     margin: "1rem 0",
+  },
+  shear: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '35%'
   },
   saveContent: {
     width: "40%",
@@ -95,13 +104,8 @@ const Recorder = () => {
           </div>
         </div>
       </div>
-      <div>
+      <div className={classes.transScr}>
         <h3>Transcript</h3>
-        <select name="rental-option">
-          <option value="small">Small</option>
-          <option value="family">Family Sedan</option>
-          <option value="lux">Luxury</option>
-        </select>
         <div>
           <ul>
             <li>

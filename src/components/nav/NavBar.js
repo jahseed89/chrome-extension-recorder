@@ -20,12 +20,24 @@ const useStyles = createUseStyles((theme) => ({
         display: 'flex',
         gap: '1rem',
         fontSize: theme.smallerTitleSize,
-        fontWeight: theme.fontWidth.largWidth
+        fontWeight: theme.fontWidth.largWidth,
+        cursor: 'pointer'
     },
     getStarted: {
         fontSize: theme.smallerTitleSize,
-        fontWeight: theme.fontWidth.largWidth
+        fontWeight: theme.fontWidth.largWidth,
+        cursor: 'pointer'
 
+    },
+    '@media (max-width: 768px)': {
+        img: {
+            display: 'none'
+        },
+        features: {
+            width: '65%',
+            gap: '0',
+            justifyContent: 'space-between'
+        }
     }
 }))
 

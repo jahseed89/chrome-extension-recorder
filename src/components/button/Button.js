@@ -11,7 +11,14 @@ const useStyles = createUseStyles((theme) => ({
         gap: '10px',
         borderRadius: '8px',
         border: 'none'
-    }
+    },
+
+    '@media (max-width: 768px)': {
+      btn: {
+        padding: '16px 20px', 
+        fontSize: '14px',
+      },
+    },
 }))
 
 const Button = ({btnText, icon}) => {

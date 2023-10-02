@@ -244,6 +244,13 @@ video{
     display: flex;
     justify-content: space-around;
 }
+.functions1{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    color: #c3c0d0;
+}
 .functions{
     display: flex;
     flex-direction: column;
@@ -279,4 +286,5 @@ video{
     width: 100%;
     color: white;
     font-size: 18px;
+    cursor: pointer;
 }

@@ -24,6 +24,10 @@ import womanOrange from './woman_orange.svg'
 import dottedbg from './dottedbg.png'
 import recording from './recording.png'
 import footerLogo from './footer-logo.png'
+import recorder from './recorder.png'
+import revisit from './revisit.png'
+import shear from './shear.png'
+import rec from './rec.png'
 
 
 export  {
@@ -52,5 +56,9 @@ export  {
     womanOrange,
     dottedbg,
     recording,
-    footerLogo
+    footerLogo,
+    recorder,
+    revisit,
+    shear,
+    rec
 }

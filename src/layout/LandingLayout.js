@@ -7,7 +7,7 @@ const useStyeles = createUseStyles(() => ({
     width: "95%",
     margin: "1rem auto",
     overflowX: 'none'
-  }
+  },
 }))
 
 const LandingLayout = () => {

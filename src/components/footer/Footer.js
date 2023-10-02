@@ -5,19 +5,29 @@ import { useNavigate } from "react-router-dom";
 import { HOME_ROUTE } from "../../content-management/Landing";
 
 const useStyles = createUseStyles((theme) => ({
+
     container: {
-        display: 'flex',
-        justifyContent: 'space-between',
-        padding: '4rem 1rem 1rem 1rem',
-        color: '#fff',
-        backgroundColor: theme.color.primaryColor,
-        fontFamily: theme.font.interFont
+      display: "flex",
+      flexWrap: "wrap",
+      justifyContent: "space-between",
+      padding: "4rem 1rem 1rem 1rem",
+      color: "#fff",
+      backgroundColor: theme.color.primaryColor,
+      fontFamily: theme.font.interFont,
+    },
+    section: {
+      flex: "1",
+      maxWidth: "calc(33.33% - 1rem)",
+      margin: "0 0.5rem",
+      "& h3": {
+        margin: "1rem 0",
+      },
     },
     listItem: {
-        listStyleType: 'none',
-        margin: '1rem 0',
-        cursor: 'pointer'
-    }
+      listStyleType: "none",
+      margin: "1rem 0",
+      cursor: "pointer",
+    },
 }))
 
 const Footer = () => {
