@@ -301,7 +301,7 @@
 
                 //  let recordUrl = URL.createObjectURL(blob);
                 const form = new FormData();
-                form.append("", blob);
+                form.append("video", blob);
               await upload(form);
               });
               async function playRecording() {
@@ -313,7 +313,7 @@
                   startButton.innerHTML = '<i class="fa fa-pause"></i>';
                   playText.innerHTML = "Pause";
                 } else {
-                  await startRecording();
+                   await startRecording();
                   mediaRecorder.ondataavailable = function () {
                     hasStarted = true;
                     play = true;
@@ -444,11 +444,10 @@
                 stream.getTracks().forEach((track) => track.stop());
                 resetAll();
               }
-              // fetch('http://catfacts-api.appspot.com/api/facts?number=99', { mode: 'no-cors'})
               // *********Uploading the file to the endpoint*********
               async function  upload(formData) {
                 const headers = [
-                  ["Content-Type", "text/mp4"],
+                  ["Content-Type", "video/mp4"],
                   // ["Accept"],
                 ];
                 try {

@@ -17,6 +17,10 @@ const useStyles = createUseStyles((theme) => ({
     padding: "2rem 1rem",
     fontFamily: theme.font.interFont
   },
+  help: {
+    color: '#a7a7a7',
+    fontSize: '14px sx'
+  },
   headers: {
     textAlign: "center",
   },
@@ -108,7 +112,7 @@ const SignUp = () => {
             <h3>Log in Sign up</h3>
             <p className={classes.desc}>
               Join millons of other in sharing successful moves on{" "}
-              <span>HelpMeOut</span>
+              <span className={classes.help}>HelpMeOut</span>
             </p>
             <div className={classes.mediaLog}>
               <img src={google} alt="" />

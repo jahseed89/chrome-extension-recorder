@@ -26,7 +26,7 @@ const useStyles = createUseStyles((theme) => ({
   },
 
   titleDesc: {
-    width: "50%",
+    width: "70%",
   },
   title: {
     color: theme.color.black,
