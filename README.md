@@ -13,6 +13,9 @@ how to run the extension....
 ### `When get started, go to your extension select Jahseed Screen Rec for recording if the start recording does not work for you, kindly refresh the browser and click the button again for your recording to take place`  
 
 
+Login
+### `user can signup with a valid email and password`
+
 how to get extension file
 
 ### `Extension files can be seen in public folder`
