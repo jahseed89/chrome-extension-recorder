@@ -17,6 +17,9 @@ const useStyles = createUseStyles((theme) => ({
         fontWeight: theme.fontWidth.middleWidth,
         lineHeight: theme.lineHeight.smallerTitleHeight
     },
+    desCont: {
+      color: '#000'
+    },
     desc: {
         fontSize: theme.fontSize.textSize,
         lineHeight: theme.lineHeight.textHeight,
@@ -36,8 +39,7 @@ const useStyles = createUseStyles((theme) => ({
           fontSize: theme.fontSize.titleSizeMobile,
         },
         desCont: {
-          textAlign: 'center',
-          color: 'red'
+          textAlign: 'center'
         }
       },
 

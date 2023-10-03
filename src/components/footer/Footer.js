@@ -15,6 +15,9 @@ const useStyles = createUseStyles((theme) => ({
       backgroundColor: theme.color.primaryColor,
       fontFamily: theme.font.interFont,
     },
+    logo: {
+      color: '#fff'
+    },
     section: {
       flex: "1",
       maxWidth: "calc(33.33% - 1rem)",
@@ -28,6 +31,12 @@ const useStyles = createUseStyles((theme) => ({
       margin: "1rem 0",
       cursor: "pointer",
     },
+
+    "@media (max-width: 768px)": {
+      logo: {
+        display: 'none'
+      }
+    }
 }))
 
 const Footer = () => {
@@ -37,7 +46,7 @@ const Footer = () => {
    
   return (
     <div className={classes.container}>
-      <div>
+      <div className={classes.logo}>
         <img src={footerLogo} alt="nav-icon" />
       </div>
       <div>

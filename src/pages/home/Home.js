@@ -1,6 +1,8 @@
 import React from "react";
 import NavBar from "../../components/nav/NavBar";
 import {
+  dotedBlue,
+  dotedGreen,
   fatherSon,
   recorder,
   revisit,
@@ -23,6 +25,7 @@ const useStyles = createUseStyles((theme) => ({
   },
   home: {
     display: "flex",
+    marginTop: '4rem'
   },
 
   titleDesc: {
@@ -36,7 +39,7 @@ const useStyles = createUseStyles((theme) => ({
     lineHeight: theme.lineHeight.titleHieght,
   },
   installBtn: {
-    textAlign: 'start'
+    textAlign: "start",
   },
   desc: {
     fontSize: theme.fontSize.textSize,
@@ -45,25 +48,42 @@ const useStyles = createUseStyles((theme) => ({
   },
   imgCont: {
     display: "flex",
-    gap: "0",
+    gap: '0 1rem',
+    position: "relative",
+    marginRight: '1rem'
+  },
+  greenDoted: {
+    position: "absolute",
+    zIndex: "-1",
+    top: "12rem",
+    left: '-3rem'
   },
   grupImg: {
-    display: "block",
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '1rem 0'
   },
-  womanOrang: {
-    marginLeft: "-10rem",
+  blueDoted: {
+    zIndex: "-1",
+    position: "absolute",
+    right: "-3rem",
+    top: '-3.5rem'
   },
+
   featureHeader: {
     textAlign: "center",
-    margin: "1.5rem 0",
+    marginTop: "8rem",
   },
   featHeaderH2: {
     color: theme.color.primaryColor,
+    fontSize: theme.fontSize.middleSize,
+    fontWidth: theme.fontWidth.largWidth
   },
   featureDetails: {
     display: "flex",
     justifyContent: "space-between",
-    margin: "2rem 0",
+    marginBottom: "6rem",
+    marginTop: '3rem'
   },
   cardHolder: {
     width: "50%",
@@ -74,6 +94,7 @@ const useStyles = createUseStyles((theme) => ({
   listinCardHolder: {
     display: "flex",
     justifyContent: "space-between",
+    marginBottom: '3rem'
   },
 
   "@media (max-width: 768px)": {
@@ -100,8 +121,8 @@ const useStyles = createUseStyles((theme) => ({
       flexWrap: "wrap",
     },
     installBtn: {
-      width: 'fit-content',
-      margin: '0 auto',
+      width: "fit-content",
+      margin: "0 auto",
     },
     cardHolder: {
       width: "100%",
@@ -140,6 +161,8 @@ const Home = () => {
             </div>
           </div>
           <div className={classes.imgCont}>
+            <img src={dotedGreen} alt="" className={classes.greenDoted} />
+
             <div className={classes.grupImg}>
               <img src={womanBlue} alt="woman-blue" />
               <img src={fatherSon} alt="father_son" />
@@ -149,6 +172,7 @@ const Home = () => {
               alt="woman_orange"
               className={classes.womanOrang}
             />
+            <img src={dotedBlue} alt="" className={classes.blueDoted} />
           </div>
         </div>
         <div>
