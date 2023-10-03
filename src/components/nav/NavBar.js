@@ -2,7 +2,7 @@ import React from 'react'
 import { navLogo } from '../../assets/index'
 import { createUseStyles } from 'react-jss'
 import { useNavigate } from 'react-router-dom';
-import { RECORDER_ROUTE } from '../../content-management/Landing';
+import { SIGNUP_ROUTE } from '../../content-management/Landing';
 
 const useStyles = createUseStyles((theme) => ({
     nav: {
@@ -53,7 +53,7 @@ const NavBar = () => {
             <span>Features</span>
             <span>How it works</span>
         </p>
-        <p className={classes.getStarted} onClick={() => navigator(`/${RECORDER_ROUTE}`)}>Get Started</p>
+        <p className={classes.getStarted} onClick={() => navigator(`/${SIGNUP_ROUTE}`)}>Get Started</p>
     </div>
   )
 }

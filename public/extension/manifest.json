@@ -3,11 +3,11 @@
   "name": "Jahseed Screen Rec",
   "description": "An extension for recording your screen and audio",
   "version": "1.0",
-  "permissions":["activeTab","desktopCapture","scripting","tabs"],
+  "permissions": ["activeTab", "desktopCapture", "scripting", "tabs"],
   "action": {
     "default_popup": "popup.html",
     "default_icon": "recorder.png",
-    "default_title":"Jahseed Screen REC"
+    "default_title": "Jahseed Screen REC"
   },
   "content_scripts": [
     {
@@ -18,8 +18,5 @@
   "background": {
     "service_worker": "background.js"
   },
-  "host_permissions":[
-    "http://*/",
-      "https://*/*"
-  ]
+  "host_permissions": ["http://*/", "https://*/*"]
 }

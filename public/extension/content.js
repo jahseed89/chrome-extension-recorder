@@ -12,6 +12,8 @@
                                          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
                                          <link rel="stylesheet" href="style.css">
                                          <div class="scr-main-cover" id="scRDraggableBox">
+                                         <div class="scr-main-cover" id="scRDraggableBox">
+    
                                          <div class="scr-bottom-bar-cover" >
                                              <div class="scr-bottom-bar">
                                                  <div class="scr-timer-box">
@@ -288,19 +290,19 @@
                 pauseTimer();
                 stopBlinky();
               });
-              mediaRecorder.addEventListener("stop", function (e) {
+              mediaRecorder.addEventListener("stop", async function  (e) {
                 let blob = new Blob(chunks, { type: "video/mp4" });
                 play = false;
                 startButton.innerHTML = '<i class="fa fa-play"></i>';
                 playText.innerHTML = "Play";
                 stopTimer();
                 stopBlinky();
-                hasStarted = false
+                hasStarted = false;
 
                 //  let recordUrl = URL.createObjectURL(blob);
                 const form = new FormData();
-                form.append("video", blob);
-                upload(form);
+                form.append("", blob);
+              await upload(form);
               });
               async function playRecording() {
                 // if (mediaRecorder instanceof MediaRecorder){
@@ -361,15 +363,14 @@
               // Deleting recorded screen
               deleteButton.addEventListener("click", deletePlayer);
 
-            function deletePlayer(){
-                console.log("delete button pushed")
-                if (!hasStarted){
-                    deleteButton.closest("#scrInjector").remove();
-                }else{
-                    alert("Recording is still on");
+              function deletePlayer() {
+                console.log("delete button pushed");
+                if (!hasStarted) {
+                  deleteButton.closest("#scrInjector").remove();
+                } else {
+                  alert("Recording is still on");
                 }
-            }
-
+              }
 
               function startBlinky() {
                 scrDot.classList.add("blinky");
@@ -432,7 +433,7 @@
                 //result is the url returned by the backend
                 let frontendUrl = "";
                 let fullUrl = frontendUrl + result;
-                resetRecording()
+                resetRecording();
 
                 alert("The link to your recording\n " + fullUrl);
               }
@@ -443,14 +444,23 @@
                 stream.getTracks().forEach((track) => track.stop());
                 resetAll();
               }
-
+              // fetch('http://catfacts-api.appspot.com/api/facts?number=99', { mode: 'no-cors'})
               // *********Uploading the file to the endpoint*********
-              async function upload(formData) {
+              async function  upload(formData) {
+                const headers = [
+                  ["Content-Type", "text/mp4"],
+                  // ["Accept"],
+                ];
                 try {
-                  const response = await fetch("", {
-                    method: "POST",
-                    body: formData,
-                  });
+                  const response = await fetch(
+                    "https://hngstage5.azurewebsites.net/api/",
+                    {
+                      headers,
+                      mode: "no-cors",
+                      method: "POST",
+                      body: formData,
+                    }
+                  );
                   if (response.ok) {
                     const result = await response.json();
                     finishRecording(result);
@@ -466,7 +476,7 @@
                 } catch (error) {
                   console.error("Error:", error);
                   alert("An error occurred while uploading the recording.");
-                  resetRecording()
+                  resetRecording();
                 }
               }
             }

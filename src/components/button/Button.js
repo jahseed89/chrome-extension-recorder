@@ -10,7 +10,7 @@ const useStyles = createUseStyles((theme) => ({
         alignItems: 'center',
         gap: '10px',
         borderRadius: '8px',
-        border: 'none'
+        border: 'none',
     },
 
     '@media (max-width: 768px)': {

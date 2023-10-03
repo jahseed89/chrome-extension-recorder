@@ -23,12 +23,12 @@ const LandingRoute = () => {
               element={<Home />}
             />
             <Route
-              path={RECORDER_ROUTE}
-              element={<Recorder />}
-            />
-            <Route
               path={SIGNUP_ROUTE}
               element={<SignUp />}
+            />
+            <Route
+              path={RECORDER_ROUTE}
+              element={<Recorder />}
             />
         </Route>
         <Route path="*" element={<PageNotFound />} />

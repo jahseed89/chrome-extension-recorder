@@ -28,6 +28,10 @@ import recorder from './recorder.png'
 import revisit from './revisit.png'
 import shear from './shear.png'
 import rec from './rec.png'
+import dotedBlue from './doted-blue.png'
+import dotedGreen from './doted-green.png'
+import facebook from './Facebook svg.png'
+import google from './Google svg.png'
 
 
 export  {
@@ -60,5 +64,9 @@ export  {
     recorder,
     revisit,
     shear,
-    rec
+    rec,
+    dotedBlue,
+    dotedGreen,
+    facebook,
+    google
 }
